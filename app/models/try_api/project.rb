@@ -13,7 +13,17 @@ module TryApi
     end
 
     def endpoint
-      "#{ host }#{ port.blank? ? '' : (':' + port.to_s) }"
+      if self.host =~ /^(\S+?):\/\/(.+)$/
+        self.protocol = $1
+        self.host = $2
+      end
+
+      if self.host =~ /^(.+?):(\d+?)$/
+        self.host = $1
+        self.port = $2.to_i if $2.present?
+      end
+
+      URI::Generic.build(scheme: self.protocol, host: self.host, port: self.port).to_s
     end
   end
 end

@@ -1,3 +1,10 @@
+require 'json'
+require 'yaml'
+require 'jbuilder'
+require 'erubi'
+require 'active_support'
+require 'active_support/core_ext'
+
 module TryApi
   class Base
 
@@ -77,12 +84,31 @@ module TryApi
       end
     end
 
-    def self.load_inclusion(filename)
-      if File.exist?("#{ Rails.root }/config/try_api/#{ filename }.yml")
-        hash = YAML.load_file("#{ Rails.root }/config/try_api/#{ filename }.yml")
-        hash.with_indifferent_access
+    def self.preprocessing(file_body, file_path)
+      if file_path =~ /^(.+?)(\.[^.]+?)$/
+        case $2
+        when '.erb'
+          file_body = eval(Erubi::Engine.new(file_body).src)
+        when '.jbuilder'
+          file_body = Jbuilder.encode &proc { |json| eval(file_body) }
+        when '.yml'
+          file_body = YAML.load(file_body)
+        when '.json'
+          file_body = JSON.parse(file_body)
+        end
+        self.preprocessing(file_body, $1)
       else
-        raise ConfigFileNotFound, "#{ Rails.root }/config/try_api/#{ filename }.yml"
+        file_body
+      end
+    end
+
+    def self.load_inclusion(filename)
+      base_path = "#{ Rails.root }/config/try_api"
+      file_path = Dir.glob("#{base_path}/**/*").find { |i| i =~ /^#{base_path}\/(.+?\/)*?#{filename}(\..+?)*$/ }
+      if file_path
+        self.preprocessing(File.read(file_path), file_path).with_indifferent_access
+      else
+        raise ConfigFileNotFound
       end
     end
 

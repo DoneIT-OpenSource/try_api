@@ -1,10 +1,11 @@
 module TryApi
   class ConfigFileNotFound < StandardError
+    def initialize(_message)
+      @message = _message
+    end
 
-    attr_accessor :message
-
-    def initialize(message)
-      @message = message
+    def message=(_message)
+      @message = _message
     end
 
     def message
@@ -13,11 +14,12 @@ module TryApi
   end
 
   class ArgumentError < ArgumentError
+    def initialize(_message)
+      @message = _message
+    end
 
-    attr_accessor :message
-
-    def initialize(message)
-      @message = message
+    def message=(_message)
+      @message = _message
     end
 
     def message

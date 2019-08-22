@@ -15,12 +15,12 @@ module TryApi
       super(id).merge local_path: local_path, full_path: full_path
     end
 
-    def full_path
-      "#{ project.endpoint }/#{ project.api_prefix }#{ self.path }"
+    def local_path
+      File.join '/', self.api_prefix || self.project.try(:api_prefix), self.path
     end
 
-    def local_path
-      "/#{ self.api_prefix || self.project.api_prefix }#{ self.path }"
+    def full_path
+      File.join self.project.try(:endpoint), self.local_path
     end
   end
 end

@@ -5,6 +5,5 @@ module TryApi
     def index
       @project = ConfigParser.read
     end
-
   end
 end

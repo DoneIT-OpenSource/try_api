@@ -6,7 +6,7 @@ module TryApi
 
     class << self
       def parse(hash:, project:)
-        return nil if hash.blank?
+        return if hash.blank?
         instance = self.new
         instance.code = hash[:code]
         instance.project = project
@@ -41,18 +41,18 @@ module TryApi
 
     def color
       case self.code
-        when 200
-          'success'
-        when 200...300
-          'info'
-        when 300...400
-          'warning'
-        when 400...500
-          'warning'
-        when 500
-          'danger'
-        else
-          'default'
+      when 200
+        'success'
+      when 200...300
+        'info'
+      when 300...400
+        'warning'
+      when 400...500
+        'warning'
+      when 500
+        'danger'
+      else
+        'default'
       end
     end
 
