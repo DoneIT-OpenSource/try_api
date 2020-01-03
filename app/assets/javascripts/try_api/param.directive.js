@@ -1,12 +1,13 @@
 angular.module('TryApi').directive('param', [
   '$filter', '$sce', function($filter, $sce) {
-    var link;
-    link = function(scope, element, attrs, ctrl) {
+
+    var link = function(scope, element, attrs, ctrl) {
       scope.unique_id = Math.random();
       return scope.getHtml = function(html) {
         return $sce.trustAsHtml(html);
       };
     };
+
     return {
       link: link,
       restrict: 'A',

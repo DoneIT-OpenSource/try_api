@@ -146,13 +146,15 @@ TryApiApp.controller('HomeController', [
                   data: []
                 };
                 if ('WebSocket' in window) {
-                  method.ws = new WebSocket('ws://' + $scope.project.endpoint + '/' + method.submit_path);
+                  var path = $scope.project.endpoint.match(/^\s*\S+?s:\/\//) ? 'wss://' : 'ws://';
+                  path += $scope.project.endpoint.replace(/^\s*\S+?:\/\//, '') + '/' + method.submit_path
+                  method.ws = new WebSocket(path);
                   method.ws.onopen = function() {
                     return $scope.$apply(function() {
                       method.pending = false;
                       method.response.data.push('Connected');
                       method.ws.send(JSON.stringify({
-                        command: "subscribe",
+                        command: 'subscribe',
                         identifier: JSON.stringify(method.identifier)
                       }));
                       method.response.data.push('Subscribed to ' + JSON.stringify(method.identifier));
@@ -179,7 +181,7 @@ TryApiApp.controller('HomeController', [
               };
               return method.speak = function() {
                 method.ws.send(JSON.stringify({
-                  command: "message",
+                  command: 'message',
                   data: JSON.stringify({
                     message: method.message,
                     action: 'speak'
