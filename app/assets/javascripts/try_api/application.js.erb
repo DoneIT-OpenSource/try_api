@@ -66,6 +66,11 @@ TryApiApp.controller('HomeController', [
     $scope.headers = [];
     $scope.global_headers = {};
     $scope.params = [];
+
+    $scope.sectionHash = function (text) {
+      return CryptoJS.SHA256(text).toString()
+    }
+
     $scope.methodSubmit = function(method) {
       var fd, headers, path, url;
       method.pending = true;
@@ -112,6 +117,7 @@ TryApiApp.controller('HomeController', [
         method: method.method.toLowerCase()
       }).success(method.response_handler).error(method.response_handler);
     };
+
     $http.get('<%= TryApi::Engine.routes.url_helpers.projects_path %>').success(function(data) {
       $scope.project = data.project;
       return $.each($scope.project.menu_items, function() {

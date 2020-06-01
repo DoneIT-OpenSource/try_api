@@ -6,10 +6,10 @@
     <div class="try-api-sidebar-menu-container">
         <ul class="try-api-sidebar-menu try-api-sidebar-menu-items nav" id="tryApiScrollspy">
             <li class="try-api-sidebar-menu-item" ng-repeat="menu_item in project.menu_items track by menu_item.id">
-                <a href="{{ '#section' + menu_item.id }}">{{ menu_item.title }}</a>
+                <a href="{{ '#' + sectionHash(menu_item.title) }}">{{ menu_item.title }}</a>
                 <ul class="second-level-menu-items nav" ng-show="menu_item.methods">
                     <li ng-repeat="method in menu_item.methods track by method.id">
-                        <a href="{{ '#section' + menu_item.id + method.id }}">{{ method.title }}</a>
+                        <a href="{{ '#' + sectionHash(method.title) }}">{{ method.title }}</a>
                     </li>
                 </ul>
             </li>
@@ -26,18 +26,18 @@
         </div>
     </div>
     <div ng-repeat="menu_item in project.menu_items track by menu_item.id">
-        <div class="row method" id="{{'section' + menu_item.id}}">
+        <div class="row method" id="{{ sectionHash(menu_item.title) }}">
             <div class="col-md-12 method-try"><h3>{{ menu_item.title }}</h3>
                 <div ng-bind-html="getHtml(menu_item.description)"></div>
             </div>
         </div>
         <div ng-repeat="method in menu_item.methods track by method.id">
-            <div class="row method" id="{{ 'section' + menu_item.id + method.id }}" ng-if="method.description">
+            <div class="row method" id="{{ sectionHash(method.title) }}" ng-if="method.description">
                 <div class="col-md-12 method-try"><h3>{{ method.title }}</h3>
                     <div ng-bind-html="getHtml(method.description)"></div>
                 </div>
             </div>
-            <div class="row method is-flex" id="{{ method.description ? '' : ('section' + menu_item.id + method.id) }}" ng-if="method.method != 'web_socket'">
+            <div class="row method is-flex" id="{{ method.description ? '' : sectionHash(method.title) }}" ng-if="method.method != 'web_socket'">
                 <div class="col-md-6 method-try">
                     <div class="method-title">{{ method.title }}</div>
                     <div class="method-url">
@@ -102,7 +102,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row method is-flex" id="{{ method.description ? '' : ('section' + menu_item.id + method.id) }}" ng-if="method.method == 'web_socket'">
+            <div class="row method is-flex" id="{{ method.description ? '' : sectionHash(method.title) }}" ng-if="method.method == 'web_socket'">
                 <div class="col-md-12 method-try"><h4>{{ method.title }}</h4>
                     <h4>
                         <span class="label label-success" style="text-transform: uppercase">{{ method.method }}</span>
