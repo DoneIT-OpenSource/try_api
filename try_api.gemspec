@@ -21,4 +21,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'rails'
   s.add_dependency 'erubi'
   s.add_dependency 'jbuilder'
+  s.add_dependency 'sass-rails'
+  s.add_dependency 'uglifier'
+  s.add_dependency 'coffee-rails'
+  s.add_dependency 'turbolinks'
 end
