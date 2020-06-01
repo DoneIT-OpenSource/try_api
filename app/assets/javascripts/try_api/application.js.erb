@@ -95,6 +95,7 @@ TryApiApp.controller('HomeController', [
         case 'post':
         case 'delete':
         case 'put':
+        case 'patch':
           $.each(method.parameters, function(i) {
             return $scope.addParameterToForm(fd, this);
           });
